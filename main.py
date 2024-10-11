@@ -60,7 +60,7 @@ class PassagemTurnoApp:
         )
         tab_autcomplete = ft.Tab(
             text="Auto Complete",
-            content=self.criar_auto_complete()
+            content=ft.Column(controls=self.card_list(),scroll=ft.ScrollMode.AUTO),
         )
 
         # Criando as abas
@@ -226,7 +226,75 @@ class PassagemTurnoApp:
             expand=True  # Expande para ocupar o espaço disponível
         )
 
+    def card_list(self):
+        # Lista de títulos ou qualquer outro conteúdo variável
+        items = [
+            "TAMPAS COLOCADAS NO LOCAL CORRETO E ORGANIZADO",
+            "LIXO SEPARADO ADEQUADAMENTE",
+            "MATERIAIS RECICLADOS IDENTIFICADOS",
+            "FERRAMENTAS ORGANIZADAS NO LOCAL CERTO",
+            "FERRAMENTAS ORGANIZADAS NO LOCAL CERTO",
+            "FERRAMENTAS ORGANIZADAS NO LOCAL CERTO",
+            "FERRAMENTAS ORGANIZADAS NO LOCAL CERTO",
+            "FERRAMENTAS ORGANIZADAS NO LOCAL CERTO"
+        ]
 
+
+        # Lista que armazenará os cartões
+        cards = []
+
+        # Loop para criar um cartão para cada item na lista
+        def on_button_click(e, button_sim, button_nao):
+            # Desmarcar ambos os botões antes de aplicar a seleção
+            button_sim.bgcolor = None
+            button_nao.bgcolor = None
+
+            # Se o botão clicado for "SIM", marque-o
+            if e.control == button_sim:
+                button_sim.bgcolor = "green"
+            else:
+                button_nao.bgcolor = "green"
+
+            # Atualize os botões
+            button_sim.update()
+            button_nao.update()
+
+            # Loop para criar um cartão para cada item na lista
+
+        for item in items:
+            # Definindo os botões "SIM" e "NÃO"
+            button_sim = ft.TextButton("SIM")
+            button_nao = ft.TextButton("NÃO")
+
+            # Definindo o comportamento dos botões ao serem clicados
+            button_sim.on_click = lambda e, s=button_sim, n=button_nao: on_button_click(e, s, n)
+            button_nao.on_click = lambda e, s=button_sim, n=button_nao: on_button_click(e, s, n)
+
+            # Criando o cartão
+            card = ft.Card(
+                content=ft.Container(
+                    content=ft.Column(
+                        [
+                            ft.ListTile(
+                                leading=ft.Icon(ft.icons.ALBUM),
+                                title=ft.Text(item),
+                            ),
+                            ft.Row(
+                                [button_sim, button_nao],
+                                alignment=ft.MainAxisAlignment.END,
+                            ),
+                        ]
+                    ),
+                    width=400,
+                    padding=10,
+                ),
+            )
+
+            # Adiciona o cartão à lista
+            cards.append(card)
+
+            # Certifique-se de que a função retorne a lista de cartões
+        return cards
     def criar_auto_complete(self):
 
 
@@ -251,7 +319,7 @@ class PassagemTurnoApp:
         return ft.Column(
             controls=[
 
-                        
+
 
             ],
             scroll=ft.ScrollMode.AUTO,  # Adiciona rolagem à coluna principal de desembarque
